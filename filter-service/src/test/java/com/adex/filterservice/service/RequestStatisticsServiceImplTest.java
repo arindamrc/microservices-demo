@@ -7,18 +7,47 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestTemplate;
+
+import com.adex.filterservice.repository.RequestStatisticsRepository;
 
 /**
  * @author arc
  *
  */
 class RequestStatisticsServiceImplTest {
+	
+	private RequestStatisticsServiceImpl rsService;
 
+	@Mock
+	private RequestStatisticsRepository rsRepository;
+
+	
+	@Value("${filter.time.diff}")
+	private Long timeDiff;
+	
+	@Mock
+	RestTemplate restTemplate;
+	
+	@Value("customer.service.host")
+	private String customerServiceHost;
+	
+	@Mock
+	private IPBlacklistService ipService;
+
+	@Mock
+	private UABlacklistService uaService;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		rsService = new RequestStatisticsServiceImpl(rsRepository, timeDiff, restTemplate, customerServiceHost, ipService, uaService);
 	}
 
 	/**

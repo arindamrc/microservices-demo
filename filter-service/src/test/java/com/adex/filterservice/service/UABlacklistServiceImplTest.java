@@ -3,22 +3,40 @@
  */
 package com.adex.filterservice.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.adex.filterservice.domain.UABlacklist;
+import com.adex.filterservice.repository.UABlacklistRepository;
 
 /**
  * @author arc
  *
  */
 class UABlacklistServiceImplTest {
+	
+	@Mock
+	UABlacklistRepository uabRepository;
+	
+	UABlacklistServiceImpl uaService;
+
+	private final String testUA = "Mozilla";
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		uaService = new UABlacklistServiceImpl(uabRepository);
 	}
 
 	/**
@@ -26,7 +44,15 @@ class UABlacklistServiceImplTest {
 	 */
 	@Test
 	void testBlacklistUA() {
-		fail("Not yet implemented");
+		// given
+		UABlacklist uab = new UABlacklist(testUA);
+		given(uabRepository.save(uab)).willReturn(uab);
+		
+		// when
+		boolean response = uaService.blacklistUA(testUA);
+		
+		// then
+		assertThat(response).isTrue();
 	}
 
 	/**
@@ -34,7 +60,16 @@ class UABlacklistServiceImplTest {
 	 */
 	@Test
 	void testWhitelistUA() {
-		fail("Not yet implemented");
+		// given
+		UABlacklist uab = new UABlacklist(testUA);
+		given(uabRepository.findById(testUA)).willReturn(Optional.empty());
+		
+		// when
+		boolean response = uaService.whitelistUA(testUA);
+		
+		// then
+		assertThat(response).isTrue();
+		verify(uabRepository).delete(uab);
 	}
 
 	/**
@@ -42,7 +77,15 @@ class UABlacklistServiceImplTest {
 	 */
 	@Test
 	void testIsBlacklisted() {
-		fail("Not yet implemented");
+		// given
+		UABlacklist uab = new UABlacklist(testUA);
+		given(uabRepository.findById(testUA)).willReturn(Optional.of(uab));
+		
+		// when
+		boolean response = uaService.isBlacklisted(testUA);
+		
+		// then
+		assertThat(response).isTrue();
 	}
 
 }
