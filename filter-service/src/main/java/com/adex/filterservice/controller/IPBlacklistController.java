@@ -4,11 +4,13 @@
 package com.adex.filterservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adex.filterservice.service.IPBlacklistService;
 
@@ -35,9 +37,10 @@ public class IPBlacklistController {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.blacklistIP(ipAddress));
+			log.info("Hi" + response);
 		} catch (Exception e) {
 			log.error("Unable to process IP: {}; {}", ipAddress, e.getMessage());
-			return ResponseEntity.unprocessableEntity().build();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!", e);
 		}
 		return ResponseEntity.ok().body(response);
 	}
@@ -47,9 +50,10 @@ public class IPBlacklistController {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.whitelistIP(ipAddress));
+			log.info("Hi" + response);
 		} catch (Exception e) {
 			log.error("Unable to process IP: {}; {}", ipAddress, e.getMessage());
-			return ResponseEntity.unprocessableEntity().build();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!", e);
 		}
 		return ResponseEntity.ok().body(response);
 	}

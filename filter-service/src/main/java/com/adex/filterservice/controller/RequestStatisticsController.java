@@ -59,7 +59,7 @@ public class RequestStatisticsController {
 		}
 	}
 	
-	@GetMapping("/customer/{date}")
+	@GetMapping("/day/{date}")
 	public ResponseEntity<RequestCounts> getRequestCountsForDay(
 			@PathVariable("date") @DateTimeFormat(pattern = "dd-MM-yyyy")  final LocalDate date) {
 		try {
