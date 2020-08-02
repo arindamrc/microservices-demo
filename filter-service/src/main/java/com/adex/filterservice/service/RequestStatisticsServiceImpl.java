@@ -4,7 +4,14 @@
 package com.adex.filterservice.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,6 +76,7 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 	}
 
 	@Override
+	@Transactional
 	public RequestStatistics addRequest(Request request) throws CustomerNotFoundException, Exception {
 		Long invalidCount = 0L;
 		
@@ -96,6 +104,7 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 		
 		Optional<RequestStatistics> statOptional = rsr.findLatestStatistic(request.getCid());
 		
+		// this is the first time the customer is making the request
 		if (!statOptional.isPresent()) {
 			RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
 				.cid(request.getCid())
@@ -121,26 +130,100 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 		Long lastTS = statOptional.get().getTimestamp();
 		Long curTS = request.getTimestamp();
 		if ((curTS - lastTS) > timeDiff) {
+			// the time difference has passed; add new row to database
+			RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
+					.cid(request.getCid())
+					.timestamp(request.getTimestamp()
+			);
+			
+			if (invalidCount > 0L) {
+				builder.invalidCount(invalidCount);
+			}else {
+				builder.validCount(1L);
+			}
+			
+			RequestStatistics saved = rsr.save(builder.build());
+			
+			return saved;
 		}
-		return null;
+		
+		// We are still within the time window. Increment the request counters.
+		RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
+				.cid(statOptional.get().getCid())
+				.timestamp(statOptional.get().getTimestamp()
+		);
+		
+		if (invalidCount > 0L) {
+			builder.invalidCount(statOptional.get().getInvalidCount() + invalidCount);
+		}else {
+			builder.validCount(statOptional.get().getValidCount() + 1L);
+		}
+		
+		RequestStatistics saved = rsr.save(builder.build());
+		return saved;
 	}
 
 	@Override
 	public Optional<RequestCounts> getRequestCountForCustomer(Long cid) {
-		// TODO Auto-generated method stub
-		return null;
+		List<RequestStatistics> stats = rsr.findByCid(cid);
+		
+		if (stats.isEmpty()) {
+			return Optional.empty();
+		}
+		
+		Long validCount = stats.stream().mapToLong(x -> x.getValidCount()).sum();
+		Long invalidCount = stats.stream().mapToLong(x -> x.getInvalidCount()).sum();
+		
+		return Optional.of(new RequestCounts(validCount, invalidCount));
 	}
 
 	@Override
 	public Optional<RequestCounts> getRequestCountForCustomerForDay(Long cid, LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		OffsetDateTime odt = OffsetDateTime.now(ZoneId.systemDefault());
+		ZoneOffset zoneOffset = odt.getOffset();
+		
+		Long dateStartInEpochSeconds = date.toEpochSecond(LocalTime.MIN, zoneOffset);
+		Long dateEndInEpochSeconds = date.toEpochSecond(LocalTime.MAX, zoneOffset);
+		
+		List<RequestStatistics> stats = rsr.findByCid(cid);
+		
+		if (stats.isEmpty()) {
+			return Optional.empty();
+		}
+		
+		Long validCount = stats
+				.stream()
+				.filter(x -> x.getTimestamp() > dateStartInEpochSeconds && x.getTimestamp() < dateEndInEpochSeconds)
+				.mapToLong(x -> x.getValidCount())
+				.sum();
+		
+		Long invalidCount = stats
+				.stream()
+				.filter(x -> x.getTimestamp() > dateStartInEpochSeconds && x.getTimestamp() < dateEndInEpochSeconds)
+				.mapToLong(x -> x.getInvalidCount())
+				.sum();
+		
+		return Optional.of(new RequestCounts(validCount, invalidCount));
 	}
 
 	@Override
 	public Optional<RequestCounts> getRequestCountForDay(LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		OffsetDateTime odt = OffsetDateTime.now(ZoneId.systemDefault());
+		ZoneOffset zoneOffset = odt.getOffset();
+		
+		Long dateStartInEpochSeconds = date.toEpochSecond(LocalTime.MIN, zoneOffset);
+		Long dateEndInEpochSeconds = date.toEpochSecond(LocalTime.MAX, zoneOffset);
+		
+		List<RequestStatistics> stats = rsr.findAllInTimeRange(dateStartInEpochSeconds, dateEndInEpochSeconds);
+		
+		if (stats.isEmpty()) {
+			return Optional.empty();
+		}
+		
+		Long validCount = stats.stream().mapToLong(x -> x.getValidCount()).sum();
+		Long invalidCount = stats.stream().mapToLong(x -> x.getInvalidCount()).sum();
+		
+		return Optional.of(new RequestCounts(validCount, invalidCount));
 	}
 	
 	/**
