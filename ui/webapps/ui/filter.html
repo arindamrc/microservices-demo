@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request Filter</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="filter-client.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Welcome to Request Filter Demo</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">Make request</h4>
+
+            <p>
+            <form id="make-request-form">
+                <div class="form-group">
+                    <label for="cid-request">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-request" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ip-request">IP:</label>
+                    <input type="text" name="ip" id="ip-request" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ua-request">UA:</label>
+                    <input type="text" name="ua" id="ua-request" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="tag-request">Tag:</label>
+                    <input type="text" name="tag" id="tag-request" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ts-request">Timestamp:</label>
+                    <input type="text" name="ts" id="ts-request" class="form-control">
+                </div>
+                <input type="submit" value="Make Request" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="make-request-message-success" style="display: none;">
+                <table id="make-request-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Request Id</th>
+                            <th>Customer Id</th>
+                            <th>Timestamp</th>
+                            <th>Valid count</th>
+                            <th>Invalid count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="make-request-body"></tbody>
+                </table>
+            </div>
+            <div class="make-request-message-failure" style="display: none;">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-4">
+            <h4 class="text-center">Request Counts Per Customer</h4>
+
+            <p>
+            <form id="customer-form">
+                <div class="form-group">
+                    <label for="cid-customer">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-customer" class="form-control">
+                </div>
+                <input type="submit" value="Get Counts" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="customer-message-success" style="display: none;">
+                <table id="customer-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Valid Requests</th>
+                            <th>Invalid Requests</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-body"></tbody>
+                </table>
+            </div>
+            <div class="customer-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <h4 class="text-center">Request Counts Per Customer Per Day</h4>
+
+            <p>
+            <form id="customer-day-form">
+                <div class="form-group">
+                    <label for="cid-customer-day">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-customer-day" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="date-customer-day">Date(dd-MM-yyyy):</label>
+                    <input type="text" name="date" id="date-customer-day" class="form-control">
+                </div>
+                <input type="submit" value="Get Counts" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="customer-day-message-success" style="display: none;">
+               <table id="customer-day-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Valid Requests</th>
+                            <th>Invalid Requests</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-day-body"></tbody>
+                </table>
+            </div>
+            <div class="customer-day-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <h4 class="text-center">Request Counts Per Day</h4>
+
+            <p>
+            <form id="day-form">
+                <div class="form-group">
+                    <label for="date-day">Date(dd-MM-yyyy):</label>
+                    <input type="text" name="date" id="date-day" class="form-control">
+                </div>
+                <input type="submit" value="Get Counts" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="day-message-success" style="display: none;">
+               <table id="day-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Valid Requests</th>
+                            <th>Invalid Requests</th>
+                        </tr>
+                    </thead>
+                    <tbody id="day-body"></tbody>
+                </table>
+            </div>
+            <div class="day-message-failure" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-3">
+            <h4 class="text-center">Blacklist IP</h4>
+
+            <p>
+            <form id="blacklist-ip-form">
+                <div class="form-group">
+                    <label for="ip-blacklist">IP:</label>
+                    <input type="text" name="ip" id="ip-blacklist" class="form-control">
+                </div>
+                <input type="submit" value="Blacklist" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="blacklist-ip-message-success" style="display: none;">
+            </div>
+            <div class="blacklist-ip-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 class="text-center">Whitelist IP</h4>
+
+            <p>
+            <form id="whitelist-ip-form">
+                <div class="form-group">
+                    <label for="ip-whitelist">IP:</label>
+                    <input type="text" name="ip" id="ip-whitelist" class="form-control">
+                </div>
+                <input type="submit" value="Whitelist" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="whitelist-ip-message-success" style="display: none;">
+            </div>
+            <div class="whitelist-ip-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 class="text-center">Blacklist UA</h4>
+
+            <p>
+            <form id="blacklist-ua-form">
+                <div class="form-group">
+                    <label for="ua-blacklist">UA:</label>
+                    <input type="text" name="ua" id="ua-blacklist" class="form-control">
+                </div>
+                <input type="submit" value="Blacklist" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="blacklist-ua-message-success" style="display: none;">
+            </div>
+            <div class="blacklist-ua-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 class="text-center">Whitelist UA</h4>
+
+            <p>
+            <form id="whitelist-ua-form">
+                <div class="form-group">
+                    <label for="ua-whitelist">IP:</label>
+                    <input type="text" name="ua" id="ua-whitelist" class="form-control">
+                </div>
+                <input type="submit" value="Whitelist" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="whitelist-ua-message-success" style="display: none;">
+            </div>
+            <div class="whitelist-ua-message-failure" style="display: none;">
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

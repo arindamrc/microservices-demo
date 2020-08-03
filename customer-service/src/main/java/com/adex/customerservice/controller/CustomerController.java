@@ -58,6 +58,8 @@ public class CustomerController {
 	
 	/**
 	 * Set customer with id {@code cid} active.
+	 * Calling this operation more than once will
+	 * <b>not</b> result in error.
 	 * 
 	 * @param cid
 	 * @return activated customer.
@@ -78,6 +80,8 @@ public class CustomerController {
 	
 	/**
 	 * Set customer with id {@code cid} inactive.
+	 * Calling this operation more than once will
+	 * <b>not</b> result in error.
 	 * 
 	 * @param cid
 	 * @return deactivated customer.

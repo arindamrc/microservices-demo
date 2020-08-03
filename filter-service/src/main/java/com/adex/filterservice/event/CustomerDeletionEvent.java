@@ -5,9 +5,10 @@ package com.adex.filterservice.event;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -16,7 +17,8 @@ import lombok.ToString;
  * @author arc
  *
  */
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -27,6 +29,6 @@ public class CustomerDeletionEvent implements Serializable{
 	/**
 	 * The deleted customer id.
 	 */
-	private final Long cid;
+	private Long cid;
 
 }

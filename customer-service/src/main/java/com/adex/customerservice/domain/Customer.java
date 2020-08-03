@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
@@ -20,13 +21,10 @@ import lombok.NonNull;
  * @author arc
  *
  */
-/**
- * @author arc
- *
- */
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "CUSTOMERS")
 public final class Customer {
 	
@@ -57,14 +55,6 @@ public final class Customer {
 	private boolean active = true;
 	
 	
-	/**
-	 * Needed for JSON/JPA
-	 */
-	Customer(){
-		this(0L, "", true);
-	}
-	
-
 	/**
 	 * Create a customer with the given name.
 	 * Customer is active by default.

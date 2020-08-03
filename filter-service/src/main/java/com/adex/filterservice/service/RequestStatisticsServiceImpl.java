@@ -4,10 +4,7 @@
 package com.adex.filterservice.service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,11 +46,13 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 	
 	private final RequestStatisticsRepository rsr;
 	
-	private final Long timeDiff;
+	@Value("${filter.time.diff}")
+	private Long timeDiff;
 	
 	private final RestTemplate restTemplate;
 	
-	private final String customerServiceHost;
+	@Value("${customer.service.host}") 
+	private String customerServiceHost;
 	
 	private final IPBlacklistService ipService;
 	
@@ -62,15 +61,11 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 	@Autowired
 	public RequestStatisticsServiceImpl(
 			RequestStatisticsRepository requestStatisticsRepository, 
-			@Value("${filter.time.diff}") Long timeDiff,
 			RestTemplate restTemplate,
-			@Value("customer.service.host") String customerServiceHost,
 			IPBlacklistService ipService,
 			UABlacklistService uaService) {
 		this.rsr = requestStatisticsRepository;
-		this.timeDiff = timeDiff;
 		this.restTemplate = restTemplate;
-		this.customerServiceHost = customerServiceHost;
 		this.ipService = ipService;
 		this.uaService = uaService;
 	}
@@ -179,11 +174,8 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 
 	@Override
 	public Optional<RequestCounts> getRequestCountForCustomerForDay(Long cid, LocalDate date) {
-		OffsetDateTime odt = OffsetDateTime.now(ZoneId.systemDefault());
-		ZoneOffset zoneOffset = odt.getOffset();
-		
-		Long dateStartInEpochSeconds = date.toEpochSecond(LocalTime.MIN, zoneOffset);
-		Long dateEndInEpochSeconds = date.toEpochSecond(LocalTime.MAX, zoneOffset);
+		Long dateStartInEpochSeconds = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+		Long dateEndInEpochSeconds = date.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
 		
 		List<RequestStatistics> stats = rsr.findByCid(cid);
 		
@@ -208,11 +200,8 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 
 	@Override
 	public Optional<RequestCounts> getRequestCountForDay(LocalDate date) {
-		OffsetDateTime odt = OffsetDateTime.now(ZoneId.systemDefault());
-		ZoneOffset zoneOffset = odt.getOffset();
-		
-		Long dateStartInEpochSeconds = date.toEpochSecond(LocalTime.MIN, zoneOffset);
-		Long dateEndInEpochSeconds = date.toEpochSecond(LocalTime.MAX, zoneOffset);
+		Long dateStartInEpochSeconds = date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+		Long dateEndInEpochSeconds = date.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
 		
 		List<RequestStatistics> stats = rsr.findAllInTimeRange(dateStartInEpochSeconds, dateEndInEpochSeconds);
 		

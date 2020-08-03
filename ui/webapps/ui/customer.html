@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="customer-client.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Welcome to Customer Services</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+
+            <h3 class="text-center">Create Customer</h3>
+
+            <p>
+            <form id="create-form">
+                <div class="form-group">
+                    <label for="cname-create">Name:</label>
+                    <input type="text" name="cname" id="cname-create" class="form-control">
+                </div>
+                <input type="submit" value="Create" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="create-message-success" style="display: none;">
+                <table id="create-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Customer Id</th>
+                            <th>Customer Name</th>
+                            <th>Is Active?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="create-details-body"></tbody>
+                </table>
+            </div>
+            <div class="create-message-failure" style="display: none;">
+                
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6">
+            <h3 class="text-center">Get customer</h3>
+
+            <p>
+            <form id="get-form">
+                <div class="form-group">
+                    <label for="cid-get">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-get" class="form-control">
+                </div>
+                <input type="submit" value="Get" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="get-message-success" style="display: none;">
+                <table id="get-details" class="table">
+                    <thead>
+                        <tr>
+                            <th>Customer Id</th>
+                            <th>Customer Name</th>
+                            <th>Is Active?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="get-details-body"></tbody>
+                </table>
+            </div>
+            <div class="get-message-failure" style="display: none;">
+
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-4">
+            <h4 class="text-center">Activate Customer</h4>
+
+            <p>
+            <form id="activate-form">
+                <div class="form-group">
+                    <label for="cid-activate">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-activate" class="form-control">
+                </div>
+                <input type="submit" value="Activate" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="activate-message-success" style="display: none;">
+            </div>
+            <div class="activate-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <h4 class="text-center">Deactivate Customer</h4>
+
+            <p>
+            <form id="deactivate-form">
+                <div class="form-group">
+                    <label for="cid-deactivate">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-deactivate" class="form-control">
+                </div>
+                <input type="submit" value="Deactivate" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="deactivate-message-success" style="display: none;">
+            </div>
+            <div class="deactivate-message-failure" style="display: none;">
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <h4 class="text-center">Delete Customer</h4>
+
+            <p>
+            <form id="delete-form">
+                <div class="form-group">
+                    <label for="cid-delete">Customer Id:</label>
+                    <input type="text" name="cid" id="cid-delete" class="form-control">
+                </div>
+                <input type="submit" value="Delete" class="btn btn-default">
+            </form>
+            </p>
+
+            <div class="delete-message-success" style="display: none;">
+            </div>
+            <div class="delete-message-failure" style="display: none;">
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

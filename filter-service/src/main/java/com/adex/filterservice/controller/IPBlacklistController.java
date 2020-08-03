@@ -37,7 +37,6 @@ public class IPBlacklistController {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.blacklistIP(ipAddress));
-			log.info("Hi" + response);
 		} catch (Exception e) {
 			log.error("Unable to process IP: {}; {}", ipAddress, e.getMessage());
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!", e);
@@ -50,7 +49,6 @@ public class IPBlacklistController {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.whitelistIP(ipAddress));
-			log.info("Hi" + response);
 		} catch (Exception e) {
 			log.error("Unable to process IP: {}; {}", ipAddress, e.getMessage());
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!", e);

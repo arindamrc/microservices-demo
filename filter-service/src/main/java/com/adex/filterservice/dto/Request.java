@@ -35,7 +35,7 @@ public class Request {
 	private Integer tid;
 	
 	/**
-	 * The user id.
+	 * The user-agent id.
 	 */
 	@NotEmpty
 	private String uid;
