@@ -44,8 +44,9 @@ $(document).ready(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,
-            timeout: 1000,
+            timeout: 15000,
             success: function(result){
+                console.log(result)
                 if(result.id) {
                     $('.create-message-failure').hide()
                     $('#create-details-body').empty()
@@ -93,6 +94,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/customer/get/'+cid,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.id) {
                     $('.get-message-failure').hide()
@@ -136,6 +138,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/customer/activate/'+cid,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.activate-message-failure').hide()
@@ -177,6 +180,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/customer/deactivate/'+cid,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.deactivate-message-failure').hide()
@@ -218,6 +222,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/customer/delete/'+cid,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.delete-message-failure').hide()

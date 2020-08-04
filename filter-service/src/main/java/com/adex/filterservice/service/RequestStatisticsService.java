@@ -56,4 +56,12 @@ public interface RequestStatisticsService {
 	 * @return
 	 */
 	public Optional<RequestCounts> getRequestCountForDay(LocalDate date);
+	
+	/**
+	 * Delete customer by customer id.
+	 * 
+	 * @param cid
+	 * @return
+	 */
+	public boolean deleteCustomer(Long cid);
 }

@@ -15,11 +15,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.adex.filterservice.domain.RequestStatistics;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author arc
  *
  */
 @DataJpaTest
+@Slf4j
 class RequestStatisticsRepositoryTest {
 	
 	@Autowired

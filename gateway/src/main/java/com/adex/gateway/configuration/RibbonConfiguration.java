@@ -16,9 +16,9 @@ public class RibbonConfiguration {
         return new PingUrl(false,"/health");
     }
 
-    @Bean
-    public IRule ribbonRule(final IClientConfig config) {
-        return new AvailabilityFilteringRule();
-    }
+//    @Bean
+//    public IRule ribbonRule(final IClientConfig config) {
+//        return new AvailabilityFilteringRule();
+//    }
 
 }

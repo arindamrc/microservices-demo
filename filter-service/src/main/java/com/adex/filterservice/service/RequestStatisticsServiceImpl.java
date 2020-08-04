@@ -27,6 +27,7 @@ import com.adex.filterservice.exceptions.CustomerInactiveException;
 import com.adex.filterservice.exceptions.CustomerNotFoundException;
 import com.adex.filterservice.exceptions.IPBlacklistedException;
 import com.adex.filterservice.exceptions.IllFormedIPException;
+import com.adex.filterservice.exceptions.StaleTimestampException;
 import com.adex.filterservice.exceptions.UABlacklistedException;
 import com.adex.filterservice.repository.RequestStatisticsRepository;
 
@@ -70,10 +71,16 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 		this.uaService = uaService;
 	}
 
+	/**
+	 * After validating and logging the request in the database, this method would call another 
+	 * microservice that actually processes the request further.
+	 */
 	@Override
 	@Transactional
 	public RequestStatistics addRequest(Request request) throws CustomerNotFoundException, Exception {
 		Long invalidCount = 0L;
+		
+		log.debug("{}",request);
 		
 		try {
 			validateRequest(request);
@@ -99,8 +106,11 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 		
 		Optional<RequestStatistics> statOptional = rsr.findLatestStatistic(request.getCid());
 		
+		log.debug("DB query complete!");
+		
 		// this is the first time the customer is making the request
 		if (!statOptional.isPresent()) {
+			log.debug("Didn't find anything!");
 			RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
 				.cid(request.getCid())
 				.timestamp(request.getTimestamp()
@@ -112,24 +122,30 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 				builder.validCount(1L);
 			}
 			
+			RequestStatistics toSave = builder.build();
+			log.debug("Saving bean {}", toSave);
 			RequestStatistics saved = rsr.save(builder.build());
 			
+			// request processing microservice call here.
 			return saved;
 		}
 		
-		
-		Assert.isTrue(statOptional.get().getTimestamp() > request.getTimestamp(), "Stale Timestamp in request!");
+		if (statOptional.get().getTimestamp() >= request.getTimestamp()) {
+			log.error("Trying to persist a stale timestamp");
+			throw new StaleTimestampException();
+		}
 		
 		// We have assumed that the time-stamps are in seconds from epoch.
 		// Check if the last time-stamp exceeds the current one by more than the configured time difference.
+		log.debug("Timestamp not stale!");
 		Long lastTS = statOptional.get().getTimestamp();
 		Long curTS = request.getTimestamp();
 		if ((curTS - lastTS) > timeDiff) {
+			log.debug("Time diff higher!");
 			// the time difference has passed; add new row to database
 			RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
 					.cid(request.getCid())
-					.timestamp(request.getTimestamp()
-			);
+					.timestamp(request.getTimestamp());
 			
 			if (invalidCount > 0L) {
 				builder.invalidCount(invalidCount);
@@ -137,13 +153,20 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 				builder.validCount(1L);
 			}
 			
+			RequestStatistics toSave = builder.build();
+			log.debug("Saving bean {}", toSave);
+			
 			RequestStatistics saved = rsr.save(builder.build());
 			
+			// check if the call is valid i.e., invalidCount == 0, and
+			// make request processing microservice call here.
 			return saved;
 		}
 		
+		log.debug("Time diff in bounds");
 		// We are still within the time window. Increment the request counters.
 		RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
+				.id(statOptional.get().getId())
 				.cid(statOptional.get().getCid())
 				.timestamp(statOptional.get().getTimestamp()
 		);
@@ -154,7 +177,11 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 			builder.validCount(statOptional.get().getValidCount() + 1L);
 		}
 		
+		log.debug("Saving updated state");
 		RequestStatistics saved = rsr.save(builder.build());
+		
+		// check if the call is valid i.e., invalidCount == 0, and
+		// make request processing microservice call here.
 		return saved;
 	}
 
@@ -266,6 +293,18 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 			throw new UABlacklistedException();
 		}
 		
+	}
+
+	@Override
+	@Transactional
+	public boolean deleteCustomer(Long cid) {
+		List<RequestStatistics> deletedStats = rsr.deleteByCid(cid);
+		
+		if (deletedStats.isEmpty()) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

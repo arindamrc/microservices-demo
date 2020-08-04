@@ -9,6 +9,18 @@ zuul:
       path: /customer/**
       serviceId: customer-service
       strip-prefix: false
+    filter:
+      path: /stats/**
+      serviceId: filter-service
+      strip-prefix: false
+    ip:
+      path: /ip/**
+      serviceId: filter-service
+      strip-prefix: false
+    ua:
+      path: /ua/**
+      serviceId: filter-service
+      strip-prefix: false
 
 endpoints:
   routes:
@@ -20,3 +32,6 @@ eureka:
   client:
     service-url:
       default-zone: http://localhost:8761/eureka/
+
+allowed:
+  origin: http://localhost:9090

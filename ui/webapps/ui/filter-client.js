@@ -40,6 +40,7 @@ $(document).ready(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.id) {
                     $('.make-request-message-failure').hide()
@@ -83,6 +84,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/stats/customer/'+cid,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.valid || result.invalid) {
                     $('.customer-message-failure').hide()
@@ -124,6 +126,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/stats/customer-day/'+cid+'/'+date,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.valid || result.invalid) {
                     $('.customer-day-message-failure').hide()
@@ -164,6 +167,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/stats/day/'+date,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.valid || result.invalid) {
                     $('.day-message-failure').hide()
@@ -204,6 +208,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/ip/blacklist/'+ip,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.blacklist-ip-message-failure').hide()
@@ -244,6 +249,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/ip/whitelist/'+ip,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.whitelist-ip-message-failure').hide()
@@ -283,6 +289,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/ua/blacklist/'+ua,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.blacklist-ua-message-failure').hide()
@@ -322,6 +329,7 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER_URL + '/ua/whitelist/'+ua,
             async: false,
+            timeout: 15000,
             success: function(result){
                 if(result.response) {
                     $('.whitelist-ua-message-failure').hide()

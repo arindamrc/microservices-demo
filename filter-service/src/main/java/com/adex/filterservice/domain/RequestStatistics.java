@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +29,9 @@ import lombok.NonNull;
 @Builder
 @Entity
 @Table(
-		name = "STATS",
-		uniqueConstraints = @UniqueConstraint(columnNames = {"STAT_CUSTOMER_ID", "STAT_TS"})
+		name = "STATS"
 )
+//,uniqueConstraints = @UniqueConstraint(columnNames={"STAT_CUSTOMER_ID", "STAT_TS"})
 public class RequestStatistics {
 
 	/**
@@ -38,14 +39,14 @@ public class RequestStatistics {
 	 */
 	@Id
 	@GeneratedValue
-	@Column(name = "STAT_ID", length = 11)
+	@Column(name = "STAT_ID")
 	private Long id;
 	
 	/**
 	 * The customer id.
 	 */
 	@NonNull
-	@Column(name = "STAT_CUSTOMER_ID", length = 11)
+	@Column(name = "STAT_CUSTOMER_ID")
 	private Long cid;
 	
 	/**
@@ -59,13 +60,17 @@ public class RequestStatistics {
 	/**
 	 * Count of valid requests within the one-hour fixed window.
 	 */
-	@Column(name = "STAT_VALID", length = 20)
-	private Long validCount;
+	@Column(name = "STAT_VALID")
+	@NotNull
+	@Builder.Default
+	private Long validCount = 0L;
 	
 	/**
 	 * Count of invalid requests within the one-hour fixed window.
 	 */
-	@Column(name = "STAT_INVALID", length = 20)
-	private Long invalidCount;
+	@Column(name = "STAT_INVALID")
+	@NotNull
+	@Builder.Default
+	private Long invalidCount = 0L;
 	
 }

@@ -4,12 +4,8 @@
 package com.adex.filterservice.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +39,7 @@ class IPBlacklistControllerTest {
 	
 	private JacksonTester<BooleanResponse> booleanResponseJson;
 	
-	private final String testIPAddress = "192.168.1.1";
+	private final String testIPAddress = "192.168.12.23";
 
 	/**
 	 * @throws java.lang.Exception
@@ -55,8 +51,7 @@ class IPBlacklistControllerTest {
 
 	/**
 	 * Test method for {@link com.adex.filterservice.controller.IPBlacklistController#blacklistIP(java.lang.String)}.
-	 * @throws IOException 
-	 * @throws UnsupportedEncodingException 
+	 * @throws Exception 
 	 */
 	@Test
 	void testBlacklistIP() throws Exception {

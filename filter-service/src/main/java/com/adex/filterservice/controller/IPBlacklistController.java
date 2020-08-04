@@ -32,7 +32,7 @@ public class IPBlacklistController {
 		this.blacklistService = blacklistService;
 	}
 	
-	@GetMapping("/blacklist/{ipAddress}")
+	@GetMapping("/blacklist/{ipAddress:.+}")
 	public ResponseEntity<BooleanResponse> blacklistIP(@PathVariable("ipAddress") final String ipAddress) {
 		BooleanResponse response = null;
 		try {
@@ -44,7 +44,7 @@ public class IPBlacklistController {
 		return ResponseEntity.ok().body(response);
 	}
 	
-	@GetMapping("/whitelist/{ipAddress}")
+	@GetMapping("/whitelist/{ipAddress:.+}")
 	public ResponseEntity<BooleanResponse> whitelistIP(@PathVariable("ipAddress") final String ipAddress) {
 		BooleanResponse response = null;
 		try {

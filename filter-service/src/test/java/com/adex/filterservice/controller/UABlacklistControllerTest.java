@@ -4,12 +4,8 @@
 package com.adex.filterservice.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +52,6 @@ class UABlacklistControllerTest {
 	/**
 	 * Test method for {@link com.adex.filterservice.controller.UABlacklistController#blacklistAgent(java.lang.String)}.
 	 * @throws Exception 
-	 * @throws  
 	 */
 	@Test
 	void testBlacklistAgent() throws Exception {

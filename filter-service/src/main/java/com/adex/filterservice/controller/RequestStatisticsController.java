@@ -24,12 +24,15 @@ import com.adex.filterservice.domain.RequestStatistics;
 import com.adex.filterservice.dto.Request;
 import com.adex.filterservice.service.RequestStatisticsService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author arc
  *
  */
 @RestController
 @RequestMapping("/stats")
+@Slf4j
 public class RequestStatisticsController {
 
 	private RequestStatisticsService requestStatisticsService;
@@ -74,7 +77,8 @@ public class RequestStatisticsController {
 		try {
 			return ResponseEntity.ok().body(requestStatisticsService.addRequest(request));
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!", e);
+			log.error("Received exception from service: {}, with message: {}", e.getClass().toString(), e.getMessage());
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
 }
