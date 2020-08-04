@@ -98,14 +98,21 @@ $(document).ready(function() {
                     $('.customer-message-success').hide()
                     $('.customer-message-failure').show()
                     $('.customer-message-failure').empty()
-                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
                 }
             },
             error: function(xhr, ajaxOptions, thrownError){
-                $('.customer-message-success').hide()
-                $('.customer-message-failure').show()
-                $('.customer-message-failure').empty()
-                    .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                if(xhr.status==404) {
+                    $('.customer-message-success').hide()
+                    $('.customer-message-failure').show()
+                    $('.customer-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
+                }else{
+                    $('.customer-message-success').hide()
+                    $('.customer-message-failure').show()
+                    $('.customer-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                }
             }
         });
 
@@ -140,14 +147,21 @@ $(document).ready(function() {
                     $('.customer-day-message-success').hide()
                     $('.customer-day-message-failure').show()
                     $('.customer-day-message-failure').empty()
-                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
                 }
             },
             error: function(xhr, ajaxOptions, thrownError){
-                $('.customer-day-message-success').hide()
-                $('.customer-day-message-failure').show()
-                $('.customer-day-message-failure').empty()
-                    .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                if(xhr.status==404) {
+                    $('.customer-day-message-success').hide()
+                    $('.customer-day-message-failure').show()
+                    $('.customer-day-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
+                }else{
+                    $('.customer-day-message-success').hide()
+                    $('.customer-day-message-failure').show()
+                    $('.customer-day-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                }
             }
         });
 
@@ -181,14 +195,21 @@ $(document).ready(function() {
                     $('.day-message-success').hide()
                     $('.day-message-failure').show()
                     $('.day-message-failure').empty()
-                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
                 }
             },
             error: function(xhr, ajaxOptions, thrownError){
-                $('.day-message-success').hide()
-                $('.day-message-failure').show()
-                $('.day-message-failure').empty()
-                    .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                if(xhr.status==404) {
+                    $('.day-message-success').hide()
+                    $('.day-message-failure').show()
+                    $('.day-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Record not found!</p>");
+                }else{
+                    $('.day-message-success').hide()
+                    $('.day-message-failure').show()
+                    $('.day-message-failure').empty()
+                        .append("<p class='bg-danger text-center'>Ooops. Something went wrong!</p>");
+                }
             }
         });
 

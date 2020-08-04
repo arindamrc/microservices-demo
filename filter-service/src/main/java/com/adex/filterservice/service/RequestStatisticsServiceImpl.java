@@ -118,12 +118,14 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 			
 			if (invalidCount > 0L) {
 				builder.invalidCount(invalidCount);
+				builder.validCount(0L);
 			}else {
 				builder.validCount(1L);
+				builder.invalidCount(0L);
 			}
 			
 			RequestStatistics toSave = builder.build();
-			log.debug("Saving bean {}", toSave);
+			log.debug("Saving new stat {}", toSave);
 			RequestStatistics saved = rsr.save(builder.build());
 			
 			// request processing microservice call here.
@@ -149,12 +151,14 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 			
 			if (invalidCount > 0L) {
 				builder.invalidCount(invalidCount);
+				builder.validCount(0L);
 			}else {
 				builder.validCount(1L);
+				builder.invalidCount(0L);
 			}
 			
 			RequestStatistics toSave = builder.build();
-			log.debug("Saving bean {}", toSave);
+			log.debug("Saving new stat {}", toSave);
 			
 			RequestStatistics saved = rsr.save(builder.build());
 			
@@ -164,21 +168,15 @@ public class RequestStatisticsServiceImpl implements RequestStatisticsService {
 		}
 		
 		log.debug("Time diff in bounds");
-		// We are still within the time window. Increment the request counters.
-		RequestStatistics.RequestStatisticsBuilder builder = RequestStatistics.builder()
-				.id(statOptional.get().getId())
-				.cid(statOptional.get().getCid())
-				.timestamp(statOptional.get().getTimestamp()
-		);
-		
+		RequestStatistics toSave = statOptional.get();
 		if (invalidCount > 0L) {
-			builder.invalidCount(statOptional.get().getInvalidCount() + invalidCount);
+			toSave.setInvalidCount(toSave.getInvalidCount() + invalidCount);
 		}else {
-			builder.validCount(statOptional.get().getValidCount() + 1L);
+			toSave.setValidCount(toSave.getValidCount() + 1L);
 		}
 		
 		log.debug("Saving updated state");
-		RequestStatistics saved = rsr.save(builder.build());
+		RequestStatistics saved = rsr.save(toSave);
 		
 		// check if the call is valid i.e., invalidCount == 0, and
 		// make request processing microservice call here.

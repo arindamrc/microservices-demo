@@ -62,15 +62,13 @@ public class RequestStatistics {
 	 */
 	@Column(name = "STAT_VALID")
 	@NotNull
-	@Builder.Default
-	private Long validCount = 0L;
+	private Long validCount;
 	
 	/**
 	 * Count of invalid requests within the one-hour fixed window.
 	 */
 	@Column(name = "STAT_INVALID")
 	@NotNull
-	@Builder.Default
-	private Long invalidCount = 0L;
+	private Long invalidCount;
 	
 }
