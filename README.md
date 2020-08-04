@@ -42,8 +42,8 @@ To run this application, the following steps must be performed:
 4. Install jetty. You can download it [here](https://www.eclipse.org/jetty/download.html). Extract it to the location of your choice. Go to the root of the project called *ui* and execute the following command:
 
     `$java -jar <jetty_extract_location>/start.jar`.
-    
-    This starts up the UI at [localhost:9090](http://localhost:9090).
+
+    This starts up the UI at [localhost:9090/ui](http://localhost:9090/ui).
 
 
 
