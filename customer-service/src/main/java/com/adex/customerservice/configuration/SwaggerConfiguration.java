@@ -32,17 +32,20 @@ public class SwaggerConfiguration implements WebMvcConfigurer{
 	private final String devName;
 	private final String devUrl;
 	private final String devEmail;
+	private final String appVersion;
 
 	public SwaggerConfiguration(
 			@Value("${springfox.documentation.swagger-ui.base-url:}") String baseUrl,
 			@Value("${developer.name}") String devName,
 			@Value("${developer.url}") String devUrl,
-			@Value("${developer.email}") String devEmail
+			@Value("${developer.email}") String devEmail,
+			@Value("${app.version}") String appVersion
 			) {
 		this.devName = "";
 		this.devUrl = "";
 		this.devEmail = "";
 		this.baseUrl = baseUrl;
+		this.appVersion = appVersion;
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer{
 		return new ApiInfoBuilder()
 				.title("Customer REST API")
 				.description("Customer API for CRUD operations.")
-				.version("0.0.1-SNAPSHOT")
+				.version(appVersion)
 				.contact(new Contact(devName, devUrl, devEmail))
 				.build();
 	}

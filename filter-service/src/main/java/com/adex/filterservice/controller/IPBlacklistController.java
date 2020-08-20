@@ -3,17 +3,23 @@
  */
 package com.adex.filterservice.controller;
 
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.adex.filterservice.service.IPBlacklistService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/ip")
+@Produces("application/json")
+@Api(value = "IP Blacklist")
 @Slf4j
 public class IPBlacklistController {
 
@@ -32,8 +40,13 @@ public class IPBlacklistController {
 		this.blacklistService = blacklistService;
 	}
 	
-	@GetMapping("/blacklist/{ipAddress:.+}")
-	public ResponseEntity<BooleanResponse> blacklistIP(@PathVariable("ipAddress") final String ipAddress) {
+	@PutMapping("/blacklist/{ipAddress:.+}")
+	@ApiOperation(
+			value = "Blacklist an IP address.",
+		    notes = "The address must conform to IPv6 or IPv4 specifications.",
+		    response = BooleanResponse.class)
+	@ApiResponse(code = 500, message = "Problem processing IP address.")
+	public ResponseEntity<BooleanResponse> blacklistIP(@ApiParam("IP address") @PathVariable("ipAddress") final String ipAddress) {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.blacklistIP(ipAddress));
@@ -44,8 +57,13 @@ public class IPBlacklistController {
 		return ResponseEntity.ok().body(response);
 	}
 	
-	@GetMapping("/whitelist/{ipAddress:.+}")
-	public ResponseEntity<BooleanResponse> whitelistIP(@PathVariable("ipAddress") final String ipAddress) {
+	@PutMapping("/whitelist/{ipAddress:.+}")
+	@ApiOperation(
+			value = "Whitelist an IP address.",
+		    notes = "The address must conform to IPv6 or IPv4 specifications.",
+		    response = BooleanResponse.class)
+	@ApiResponse(code = 500, message = "Problem processing IP address.")
+	public ResponseEntity<BooleanResponse> whitelistIP(@ApiParam("IP address") @PathVariable("ipAddress") final String ipAddress) {
 		BooleanResponse response = null;
 		try {
 			response = new BooleanResponse(blacklistService.whitelistIP(ipAddress));

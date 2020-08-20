@@ -45,5 +45,10 @@ To run this application, the following steps must be performed:
 
     This starts up the UI at [localhost:9090/ui](http://localhost:9090/ui).
 
+5. The services are also documented using Swagger. To view the documentation please click the following for the respective services:
+	
+	1. [customer-service](http://localhost:8080/documentation/swagger-ui/index.html)
+	2. [filter-service](http://localhost:8081/documentation/swagger-ui/index.html)
+
 
 

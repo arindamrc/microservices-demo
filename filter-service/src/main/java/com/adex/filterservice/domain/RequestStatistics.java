@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +34,7 @@ import lombok.NonNull;
 		name = "STATS"
 )
 //,uniqueConstraints = @UniqueConstraint(columnNames={"STAT_CUSTOMER_ID", "STAT_TS"})
+@ApiModel(value = "Request Statistics", description = "Request stats gathered till the current time.")
 public class RequestStatistics {
 
 	/**
@@ -40,6 +43,7 @@ public class RequestStatistics {
 	@Id
 	@GeneratedValue
 	@Column(name = "STAT_ID")
+	@ApiModelProperty("Request stat Id.")
 	private Long id;
 	
 	/**
@@ -47,6 +51,7 @@ public class RequestStatistics {
 	 */
 	@NonNull
 	@Column(name = "STAT_CUSTOMER_ID")
+	@ApiModelProperty("Customer Id.")
 	private Long cid;
 	
 	/**
@@ -55,6 +60,7 @@ public class RequestStatistics {
 	 */
 	@NonNull
 	@Column(name = "STAT_TS")
+	@ApiModelProperty("Timestamp.")
 	private Long timestamp;
 	
 	/**
@@ -62,6 +68,7 @@ public class RequestStatistics {
 	 */
 	@Column(name = "STAT_VALID")
 	@NotNull
+	@ApiModelProperty("Count of valid requests.")
 	private Long validCount;
 	
 	/**
@@ -69,6 +76,7 @@ public class RequestStatistics {
 	 */
 	@Column(name = "STAT_INVALID")
 	@NotNull
+	@ApiModelProperty("Count of invalid requests.")
 	private Long invalidCount;
 	
 }
