@@ -6,6 +6,8 @@ package com.adex.customerservice.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -99,7 +101,7 @@ class CustomerControllerTest {
 
 		// when
 		MockHttpServletResponse response = mvc.perform(
-				get("/customer/activate/"+testCid)
+				put("/customer/activate/"+testCid)
 				.accept(MediaType.APPLICATION_JSON)
 				).andReturn().getResponse();
 		
@@ -125,7 +127,7 @@ class CustomerControllerTest {
 
 		// when
 		MockHttpServletResponse response = mvc.perform(
-				get("/customer/deactivate/"+testCid)
+				put("/customer/deactivate/"+testCid)
 				.accept(MediaType.APPLICATION_JSON)
 				).andReturn().getResponse();
 		
@@ -174,7 +176,7 @@ class CustomerControllerTest {
 
 		// when
 		MockHttpServletResponse response = mvc.perform(
-				get("/customer/delete/"+testCid)
+				delete("/customer/delete/"+testCid)
 				.accept(MediaType.APPLICATION_JSON)
 				).andReturn().getResponse();
 		

@@ -5,6 +5,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -29,7 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
 	private final EventDispatcher eventDispatcher;
 	
 	@Autowired
-	public CustomerServiceImpl(CustomerRepository customerRepository, EventDispatcher eventDispatcher) {
+	public CustomerServiceImpl(
+			CustomerRepository customerRepository, EventDispatcher eventDispatcher) {
 		this.customerRepository = customerRepository;
 		this.eventDispatcher = eventDispatcher;
 	}
@@ -42,6 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
+	@CachePut(cacheNames = "customercache", key = "#cid")
 	public Customer deactivateCustomer(Long cid) throws CustomerNotFoundException {
 		Optional<Customer> customerOptional = customerRepository.findById(cid);
 		
@@ -61,6 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
+	@CachePut(cacheNames = "customercache", key = "#cid")
 	public Customer activateCustomer(Long cid) throws CustomerNotFoundException {
 		Optional<Customer> customerOptional = customerRepository.findById(cid);
 		
@@ -80,6 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
+	@CacheEvict(cacheNames = "customercache", key = "#cid")
 	public boolean deleteCustomer(Long cid) throws CustomerNotFoundException {
 		boolean retval = true;
 		
@@ -107,6 +115,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
+	@Cacheable(cacheNames = "customercache")
 	public Customer getCustomer(Long cid) throws CustomerNotFoundException {
 		Optional<Customer> customerOptional = customerRepository.findById(cid);
 	
