@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "CUSTOMERS")
+@ApiModel(value = "Customer", description = "A customer's data.")
 public final class Customer {
 	
 	
@@ -35,6 +38,7 @@ public final class Customer {
 	@Id
 	@GeneratedValue
 	@Column(name="CUSTOMER_ID", length = 11)
+	@ApiModelProperty("Customer Id.")
 	private Long id;
 	
 	/**
@@ -43,6 +47,7 @@ public final class Customer {
 	@NonNull
 	@Column(nullable = false, length = 255, name = "CUSTOMER_NAME")
 	@Size(min=1, max=255)
+	@ApiModelProperty("Customer Name.")
 	private String name;
 	
 	/**
@@ -52,6 +57,7 @@ public final class Customer {
 	 * by default.
 	 */
 	@Column(name = "CUSTOMER_STATUS")
+	@ApiModelProperty("Is active?.")
 	private boolean active = true;
 	
 	
